@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <SignAssembly>False</SignAssembly>
     <Company>Ross Elliman (Russlyman)</Company>
     <Authors>Russlyman</Authors>
