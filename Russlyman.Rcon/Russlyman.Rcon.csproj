@@ -11,7 +11,7 @@
     <RepositoryUrl>https://github.com/Russlyman/Russlyman.Rcon</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>rcon; fivem; gtav; mit license</PackageTags>
-    <Copyright>Ross Elliman</Copyright>
+    <Copyright>Copyright (c) 2022 Ross Elliman</Copyright>
     <Version>0.0.0</Version>
     <Description>A library for communicating with Quake III Arena RCon compatible servers.</Description>
     <IncludeSymbols>true</IncludeSymbols>
