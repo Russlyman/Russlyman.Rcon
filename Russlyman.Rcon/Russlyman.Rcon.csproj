@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <SignAssembly>False</SignAssembly>
+    <Company>Ross Elliman (Russlyman)</Company>
+    <Authors>Russlyman</Authors>
+    <Product>Russlyman's RCon Library</Product>
+    <PackageProjectUrl>https://github.com/Russlyman/Russlyman.Rcon</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Russlyman/Russlyman.Rcon</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>rcon; fivem; gtav; mit license</PackageTags>
+    <Copyright>Ross Elliman</Copyright>
+    <Version>0.0.0</Version>
+    <Description>A library for communicating with Quake III Arena RCon compatible servers.</Description>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+</Project>
