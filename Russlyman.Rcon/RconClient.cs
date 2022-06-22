@@ -18,15 +18,12 @@ namespace Russlyman.Rcon
         private IPEndPoint _ipEndPoint;
         private UdpClient _udpClient;
 
-        private bool _connected;
-
         private byte[] _header;
         private readonly string[] _uglyList = { "????print", "^1", "^2", "^3", "^4", "^5", "^6", "^7", "^8", "^9" };
 
         public RconClient(int receiveTimeoutMs = 3000)
         {
             _receiveTimeoutMs = receiveTimeoutMs;
-            _connected = false;
         }
 
         // http://jonjohnston.co.uk/articles/3/how-to-access-quake-iii-arena-dedicated-server-from-linux-command-line
@@ -59,7 +56,7 @@ namespace Russlyman.Rcon
 
         public string Send(string command)
         {
-            if (!_connected)
+            if (_udpClient == null)
             {
                 throw new NotConnectedException("You need to connect before you can send commands.");
             }
@@ -74,7 +71,7 @@ namespace Russlyman.Rcon
 
         public async Task<string> SendAsync(string command)
         {
-            if (!_connected)
+            if (_udpClient == null)
             {
                 throw new NotConnectedException("You need to connect before you can send commands.");
             }
@@ -100,6 +97,8 @@ namespace Russlyman.Rcon
 
             var newIpAddress = IPAddress.Parse(ip);
 
+            Close();
+
             var newUdpClient = new UdpClient();
             newUdpClient.Client.ReceiveTimeout = _receiveTimeoutMs;
             newUdpClient.Connect(newIpAddress, port);
@@ -112,8 +111,12 @@ namespace Russlyman.Rcon
             _ipEndPoint = new IPEndPoint(Ip, Port);
 
             PrepareHeader();
+        }
 
-            _connected = true;
+        public void Close()
+        {
+            if (_udpClient != null)
+                _udpClient.Close();
         }
     }
 }
