@@ -97,11 +97,11 @@ namespace Russlyman.Rcon
 
             var newIpAddress = IPAddress.Parse(ip);
 
-            Close();
-
             var newUdpClient = new UdpClient();
             newUdpClient.Client.ReceiveTimeout = _receiveTimeoutMs;
             newUdpClient.Connect(newIpAddress, port);
+
+            Close();
 
             _udpClient = newUdpClient;
             Ip = newIpAddress;
