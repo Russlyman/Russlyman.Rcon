@@ -12,13 +12,22 @@ namespace Russlyman.Rcon
     {
         public IPAddress Ip { get; private set; }
         public int Port { get; private set; }
+        private string _password;
+        private int _receiveTimeoutMs;
 
         private IPEndPoint _ipEndPoint;
         private UdpClient _udpClient;
 
+        private bool _connected;
+
         private byte[] _header;
-        private string _password;
         private readonly string[] _uglyList = { "????print", "^1", "^2", "^3", "^4", "^5", "^6", "^7", "^8", "^9" };
+
+        public RconClient(int receiveTimeoutMs = 3000)
+        {
+            _receiveTimeoutMs = receiveTimeoutMs;
+            _connected = false;
+        }
 
         // http://jonjohnston.co.uk/articles/3/how-to-access-quake-iii-arena-dedicated-server-from-linux-command-line
         private void PrepareHeader()
@@ -50,20 +59,38 @@ namespace Russlyman.Rcon
 
         public string Send(string command)
         {
+            if (!_connected)
+            {
+                throw new NotConnectedException("You need to connect before you can send commands.");
+            }
+
             var oob = PrepareOob(command);
             _udpClient.Send(oob, oob.Length);
 
             var replyBytes = _udpClient.Receive(ref _ipEndPoint);
+
             return CleanReply(replyBytes);
         }
 
         public async Task<string> SendAsync(string command)
         {
+            if (!_connected)
+            {
+                throw new NotConnectedException("You need to connect before you can send commands.");
+            }
+
             var oob = PrepareOob(command);
             await _udpClient.SendAsync(oob, oob.Length);
 
-            var replyBytes = (await _udpClient.ReceiveAsync()).Buffer;
-            return CleanReply(replyBytes);
+            var replyTask = _udpClient.ReceiveAsync();
+            var tasks = await Task.WhenAny(replyTask, Task.Delay(_receiveTimeoutMs));
+
+            if (tasks is Task<UdpReceiveResult>)
+            {
+                return CleanReply(replyTask.Result.Buffer);
+            }
+            
+            throw new SocketException(10060);
         }
 
         public void Connect(string ip, int port, string password)
@@ -74,6 +101,7 @@ namespace Russlyman.Rcon
             var newIpAddress = IPAddress.Parse(ip);
 
             var newUdpClient = new UdpClient();
+            newUdpClient.Client.ReceiveTimeout = _receiveTimeoutMs;
             newUdpClient.Connect(newIpAddress, port);
 
             _udpClient = newUdpClient;
@@ -84,6 +112,8 @@ namespace Russlyman.Rcon
             _ipEndPoint = new IPEndPoint(Ip, Port);
 
             PrepareHeader();
+
+            _connected = true;
         }
     }
 }
