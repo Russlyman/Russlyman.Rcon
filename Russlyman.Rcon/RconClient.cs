@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Russlyman.Rcon
 {
-    public class RconClient
+    public class RconClient : IDisposable
     {
         public IPAddress Ip { get; private set; }
         public int Port { get; private set; }
@@ -21,9 +21,12 @@ namespace Russlyman.Rcon
         private byte[] _header;
         private readonly string[] _uglyList = { "????print", "^1", "^2", "^3", "^4", "^5", "^6", "^7", "^8", "^9" };
 
+        private bool _disposed;
+
         public RconClient(int receiveTimeoutMs = 3000)
         {
             _receiveTimeoutMs = receiveTimeoutMs;
+            _disposed = false;
         }
 
         // http://jonjohnston.co.uk/articles/3/how-to-access-quake-iii-arena-dedicated-server-from-linux-command-line
@@ -101,7 +104,7 @@ namespace Russlyman.Rcon
             newUdpClient.Client.ReceiveTimeout = _receiveTimeoutMs;
             newUdpClient.Connect(newIpAddress, port);
 
-            Close();
+            CloseUdpClient();
 
             _udpClient = newUdpClient;
             Ip = newIpAddress;
@@ -113,10 +116,19 @@ namespace Russlyman.Rcon
             PrepareHeader();
         }
 
-        public void Close()
+        private void CloseUdpClient()
         {
             if (_udpClient != null)
                 _udpClient.Close();
+        }
+
+        public void Dispose()
+        {
+            if (_disposed) return;
+
+            CloseUdpClient();
+
+            GC.SuppressFinalize(this);
         }
     }
 }
