@@ -13,7 +13,7 @@ namespace Russlyman.Rcon
         public IPAddress Ip { get; private set; }
         public int Port { get; private set; }
         private string _password;
-        private int _receiveTimeoutMs;
+        private int _replyTimeoutMs;
 
         private IPEndPoint _ipEndPoint;
         private UdpClient _udpClient;
@@ -23,9 +23,9 @@ namespace Russlyman.Rcon
 
         private bool _disposed;
 
-        public RconClient(int receiveTimeoutMs = 3000)
+        public RconClient(int replyTimeoutMs = 3000)
         {
-            _receiveTimeoutMs = receiveTimeoutMs;
+            _replyTimeoutMs = replyTimeoutMs;
             _disposed = false;
         }
 
@@ -83,7 +83,7 @@ namespace Russlyman.Rcon
             await _udpClient.SendAsync(oob, oob.Length);
 
             var replyTask = _udpClient.ReceiveAsync();
-            var tasks = await Task.WhenAny(replyTask, Task.Delay(_receiveTimeoutMs));
+            var tasks = await Task.WhenAny(replyTask, Task.Delay(_replyTimeoutMs));
 
             if (tasks is Task<UdpReceiveResult>)
             {
@@ -101,7 +101,7 @@ namespace Russlyman.Rcon
             var newIpAddress = IPAddress.Parse(ip);
 
             var newUdpClient = new UdpClient();
-            newUdpClient.Client.ReceiveTimeout = _receiveTimeoutMs;
+            newUdpClient.Client.ReceiveTimeout = _replyTimeoutMs;
             newUdpClient.Connect(newIpAddress, port);
 
             CloseUdpClient();
