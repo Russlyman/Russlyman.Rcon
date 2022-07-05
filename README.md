@@ -1,12 +1,7 @@
 # Russlyman.Rcon
-<p>
-  <a href="https://github.com/Russlyman/Russlyman.Rcon/releases/latest" alt="Release">
-    <img src="https://img.shields.io/github/v/release/Russlyman/Russlyman.Rcon" /></a>
-  <a href="https://www.nuget.org/packages/Russlyman.Rcon" alt="Nuget">
-    <img src="https://img.shields.io/nuget/v/Russlyman.Rcon" /></a>
-  <a href="https://github.com/Russlyman/Russlyman.Rcon/blob/main/LICENSE" alt="License">
-    <img src="https://img.shields.io/github/license/Russlyman/Russlyman.Rcon" /></a>
-</p>
+[![Release](https://img.shields.io/github/v/release/Russlyman/Russlyman.Rcon)](https://github.com/Russlyman/Russlyman.Rcon/releases/latest)
+[![NuGet](https://img.shields.io/nuget/v/Russlyman.Rcon)](https://www.nuget.org/packages/Russlyman.Rcon)
+[![License](https://img.shields.io/github/license/Russlyman/Russlyman.Rcon)](https://github.com/Russlyman/Russlyman.Rcon/blob/main/LICENSE)
 
 Russlyman.Rcon is a C# .NET library for sending RCon messages to game servers that implement the Quake III Arena RCon protocol.
 
