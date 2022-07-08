@@ -46,7 +46,7 @@ The RCon client.
 
 #### Parameters
 
-replyTimeoutMs - The timeout in milliseconds for how long the client should wait for a reply from the server after a command has been sent.
+`replyTimeoutMs` - The timeout in milliseconds for how long the client should wait for a reply from the server after a command has been sent.
 
 ### Connect Method
 
@@ -62,11 +62,17 @@ This method can be used multiple times to connect to other servers without creat
 
 #### Parameters
 
-ip - The IP Address for the server.
+`ip` - The IP Address for the server.
 
-port - The RCon port for the server.
+`port` - The RCon port for the server.
 
-password - The RCon password for the server.
+`password` - The RCon password for the server.
+
+#### Exceptions
+
+`FormatException` - Invalid IP or Port format.
+
+`ArgumentException` - Invalid Password format.
 
 ### Send Method
 
@@ -80,11 +86,17 @@ Sends a command to the server.
 
 #### Parameters
 
-command - The command to send to the connected server.
+`command` - The command to send to the connected server.
 
 #### Returns
 
 The servers response to the sent command.
+
+#### Exceptions
+
+`SocketException` - The connected server is unreachable.
+
+`NotConnectedException` - A server has been not been connected.
 
 ### SendAsync Method
 
@@ -98,11 +110,17 @@ Asynchronously sends a command to the connected server.
 
 #### Parameters
 
-command - The command to send to the server.
+`command` - The command to send to the server.
 
 #### Returns
 
 A task containing the servers response to the sent command.
+
+#### Exceptions
+
+`SocketException` - The connected server is unreachable.
+
+`NotConnectedException` - A server has been not been connected.
 
 ### Dispose Method
 
